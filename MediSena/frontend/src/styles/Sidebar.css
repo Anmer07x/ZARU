@@ -1,6 +1,7 @@
 .sidebar {
   width: 280px;
-  background-color: #E6EEF5; /* Light blue/grey from screenshot */
+  background-color: #E6EEF5;
+  /* Light blue/grey from screenshot */
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -43,7 +44,8 @@
   padding: 14px 20px;
   border-radius: 16px;
   cursor: pointer;
-  color: #5C768D; /* Grayish blue */
+  color: #5C768D;
+  /* Grayish blue */
   font-weight: 600;
   transition: all 0.2s ease;
   gap: 15px;
@@ -55,8 +57,14 @@
 }
 
 .nav-item.active {
-  background-color: #D6E4F0; /* Soft blue for active state */
-  color: #1C3E57; /* Darker blue from screenshot */
+  background-color: #1C3E57;
+  /* Darker blue from mockup */
+  color: #FFFFFF;
+  /* White text for active state */
+}
+
+.nav-item.active .nav-item-icon {
+  color: #FFFFFF;
 }
 
 .nav-item-icon {
@@ -118,7 +126,8 @@
 }
 
 .logout-button {
-  background-color: #5EABDB; /* Bright blue from screenshot */
+  background-color: #5EABDB;
+  /* Bright blue from screenshot */
   color: white;
   border: none;
   border-radius: 12px;

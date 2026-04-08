@@ -18,15 +18,14 @@
 
 .main-layout {
   display: flex;
-  height: 100vh;
-  width: 100vw;
-  background: linear-gradient(135deg, #f0f4f8 0%, #d9e2ec 100%);
-  overflow: hidden;
+  min-height: 100vh;
+  width: 100%;
+  background: transparent;
 }
 
 .main-content {
   flex: 1;
-  padding: 30px 40px;
+  padding: 0;
   overflow-y: auto;
   position: relative;
   transition: padding 0.3s ease;

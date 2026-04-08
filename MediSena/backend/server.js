@@ -10,9 +10,11 @@ const app = express();
 const allowedOrigins = [
   'http://localhost:5173',
   'http://localhost:5174',
+  'http://localhost:5175',
   'http://localhost:3000',
   'http://127.0.0.1:5173',
   'http://127.0.0.1:5174',
+  'http://127.0.0.1:5175',
 ];
 
 app.use(cors({
@@ -99,6 +101,64 @@ app.get('/api/usuarios', authenticateToken, (req, res) => {
     { id: 3, nombre: "Carlos Sanchez", rol: "Médico", email: "carlos@medisena.com" }
   ];
   res.json(usuarios);
+});
+
+// ──────────────────────────────────────────────
+// 📄 Resoluciones Data
+// ──────────────────────────────────────────────
+
+app.get('/api/resoluciones', authenticateToken, (req, res) => {
+  const resoluciones = [
+    { 
+      id: 1, 
+      numero: "824", 
+      fecha: "01 ene 2024", 
+      descripcion: "Resolución 824 - Vigencia 2024", 
+      estado: "Vigente", 
+      vigencia: "01 ene 2024 - 31 dic 2024" 
+    },
+    { 
+      id: 2, 
+      numero: "824", 
+      fecha: "01 ene 2023", 
+      descripcion: "Resolución 824 - Vigencia 2023", 
+      estado: "Vencido", 
+      vigencia: "01 ene 2023 - 31 dic 2023" 
+    },
+    { 
+      id: 3, 
+      numero: "824", 
+      fecha: "01 ene 2022", 
+      descripcion: "Resolución 824 - Vigencia 2022", 
+      estado: "Vigente", 
+      vigencia: "01 ene 2022 - 31 dic 2022" 
+    },
+    { 
+      id: 4, 
+      numero: "824", 
+      fecha: "01 ene 2021", 
+      descripcion: "Resolución 824 - Vigencia 2021", 
+      estado: "Vencido", 
+      vigencia: "01 ene 2021 - 31 dic 2021" 
+    },
+    { 
+      id: 5, 
+      numero: "824", 
+      fecha: "01 ene 2020", 
+      descripcion: "Resolución 824 - Vigencia 2020", 
+      estado: "Vencido", 
+      vigencia: "01 ene 2020 - 31 dic 2020" 
+    },
+    { 
+      id: 6, 
+      numero: "824", 
+      fecha: "01 ene 2019", 
+      descripcion: "Resolución 824 - Vigencia 2019", 
+      estado: "Vencido", 
+      vigencia: "01 ene 2019 - 31 dic 2019" 
+    }
+  ];
+  res.json(resoluciones);
 });
 
 // ──────────────────────────────────────────────

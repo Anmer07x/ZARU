@@ -12,7 +12,7 @@
   --sans: 'Outfit', system-ui, -apple-system, sans-serif;
   
   font-family: var(--sans);
-  background-color: var(--bg-app);
+  /* background-color eliminado para que cada vista controle su propio fondo */
   color: var(--sidebar-text);
 }
 
@@ -41,7 +41,7 @@ body {
 
 .main-content {
   flex: 1;
-  padding: 2rem;
+  padding: 0;
   overflow-y: auto;
 }
 
