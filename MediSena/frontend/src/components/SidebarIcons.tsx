@@ -1,6 +1,10 @@
 import React from 'react';
 
-export const DashboardIcon = ({ className }) => (
+export interface IconProps {
+  className?: string;
+}
+
+export const DashboardIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M11.7558 10.3418L12.0882 11.6715" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M10.838 13.3925C9.66238 13.6258 8.44226 13.378 7.45078 12.7045C7.28435 12.5937 7.08075 12.5536 6.88471 12.5928L4.51206 13.0672C3.34282 13.3009 2.50122 14.3275 2.50122 15.5198V15.84" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
@@ -14,14 +18,14 @@ export const DashboardIcon = ({ className }) => (
   </svg>
 );
 
-export const MaestrasIcon = ({ className }) => (
+export const MaestrasIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path fillRule="evenodd" clipRule="evenodd" d="M10.6712 2.50122C11.0229 2.50122 11.3368 2.72208 11.4556 3.05312L11.8792 4.23278C11.9464 4.41828 12.0769 4.57414 12.2476 4.67296L13.504 5.39826C13.6746 5.4967 13.8746 5.53155 14.0684 5.49663L15.3023 5.27404C15.6487 5.21104 15.9974 5.37254 16.1734 5.67754L16.8404 6.82802C17.0169 7.1322 16.9835 7.51441 16.757 7.78342L15.9475 8.74049C15.82 8.89098 15.75 9.0818 15.7499 9.27904V10.7296C15.75 10.9269 15.82 11.1177 15.9475 11.2682L16.757 12.2253C16.9835 12.4943 17.0169 12.8765 16.8404 13.1807L16.1734 14.3311C15.9975 14.6358 15.6493 14.7973 15.3031 14.7346L14.0692 14.5121C13.8754 14.4771 13.6754 14.512 13.5048 14.6104L12.2485 15.3357C12.0777 15.4345 11.9472 15.5904 11.88 15.7759L11.4565 16.9556C11.3375 17.2869 11.0232 17.5078 10.6712 17.5075H9.33727C8.98553 17.5075 8.67166 17.2866 8.55277 16.9556L8.12926 15.7759C8.06206 15.5907 7.93194 15.4349 7.76161 15.3357L6.50442 14.6104C6.33381 14.512 6.13387 14.4771 5.94002 14.5121L4.70617 14.7346C4.3597 14.7976 4.01101 14.6361 3.83497 14.3311L3.16803 13.1807C2.99153 12.8765 3.02488 12.4943 3.2514 12.2253L4.0609 11.2682C4.1884 11.1177 4.25841 10.9269 4.25848 10.7296V9.27904C4.25841 9.0818 4.1884 8.89098 4.0609 8.74049L3.25974 7.78342C3.03322 7.51441 2.99987 7.1322 3.17637 6.82802L3.84331 5.67754C4.01923 5.37287 4.36748 5.21142 4.71367 5.27404L5.94752 5.49663C6.14137 5.53155 6.34132 5.4967 6.51192 5.39826L7.76911 4.67296C7.93945 4.57383 8.06956 4.41804 8.13677 4.23278L8.56028 3.05312C8.67822 2.72465 8.98828 2.50442 9.33727 2.50122H10.6712Z" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <circle cx="10.0043" cy="10.0043" r="2.29262" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-export const DatosBasicosIcon = ({ className }) => (
+export const DatosBasicosIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M10 9.99992H12.5" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M9.99992 6.66667H5.83325" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -33,7 +37,7 @@ export const DatosBasicosIcon = ({ className }) => (
   </svg>
 );
 
-export const MovimientosIcon = ({ className }) => (
+export const MovimientosIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M15.4167 17.9167L14.1667 16.6667L15.4167 15.4167" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M14.1667 16.6667H15.8334C17.2141 16.6667 18.3334 15.5475 18.3334 14.1667" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -44,7 +48,7 @@ export const MovimientosIcon = ({ className }) => (
   </svg>
 );
 
-export const ExcedentesIcon = ({ className }) => (
+export const ExcedentesIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M9.99992 7.49998V8.1732" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M8.33325 9.51964C8.43062 8.6925 9.17079 8.09455 9.99992 8.17321" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -57,14 +61,14 @@ export const ExcedentesIcon = ({ className }) => (
   </svg>
 );
 
-export const ConsultasIcon = ({ className }) => (
+export const ConsultasIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <circle cx="9.21552" cy="9.21552" r="5.88495" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M16.6695 16.6695L13.3765 13.3765" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
   </svg>
 );
 
-export const ReportesIcon = ({ className }) => (
+export const ReportesIcon = ({ className }: IconProps) => (
   <svg className={className} width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M17.5 8.33333V4.16667C17.5 3.24619 16.7538 2.5 15.8333 2.5H4.16667C3.24619 2.5 2.5 3.24619 2.5 4.16667V15.8333C2.5 16.7538 3.24619 17.5 4.16667 17.5H10" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
     <path d="M5.83325 6.66667H12.4999" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"/>
@@ -74,7 +78,7 @@ export const ReportesIcon = ({ className }) => (
   </svg>
 );
 
-export const ReportesNacionalesIcon = ({ className }) => (
+export const ReportesNacionalesIcon = ({ className }: IconProps) => (
   <svg className={className} width="16" height="22" viewBox="0 0 16 22" fill="none" xmlns="http://www.w3.org/2000/svg">
     <path d="M9.92578 0.576172C9.44543 1.0169 9.04384 1.38474 8.7334 1.70898C8.32729 2.13314 8.01959 2.54087 7.87305 3.03027C7.7249 3.52532 7.76127 4.03789 7.90332 4.63379C8.04373 5.22274 8.30154 5.94824 8.64551 6.88379L8.73828 7.13477L8.99902 7.19727L14.8223 8.58887C14.5619 9.98077 14.5359 10.9414 14.6758 11.7832C14.7895 12.4675 15.014 13.0641 15.2686 13.7109L12.6611 13.7217L12.1494 13.7236L12.1641 14.2354C12.2336 16.6723 12.6932 18.6551 12.0137 21.3408L11.7891 21.2568L12.0439 19.4941L12.1338 18.8682L11.5039 18.9248L8.62402 19.1816C6.47977 16.362 3.62908 15.205 1.05957 13.8916C2.12219 13.272 3.1162 12.4589 3.5127 11.0928L3.54395 10.9844L3.52539 10.8721L2.71484 5.94238C3.58784 4.89262 4.37156 3.9172 5.4375 3.01465C6.50936 2.10713 7.87644 1.26848 9.90137 0.558594L9.92578 0.576172Z" fill="currentColor"/>
   </svg>

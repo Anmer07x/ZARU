@@ -5,7 +5,7 @@ import Dashboard from './views/Dashboard';
 import GestionResoluciones from './views/GestionResoluciones';
 import './App.css';
 
-const ProtectedRoute = ({ children }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const token = localStorage.getItem('token');
   if (!token) {
     return <Navigate to="/login" replace />;

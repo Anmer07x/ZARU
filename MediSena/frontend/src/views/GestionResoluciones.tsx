@@ -18,9 +18,25 @@ import {
 } from 'lucide-react';
 import '../styles/GestionResoluciones.css';
 
-const GestionResoluciones = () => {
-  const [resoluciones, setResoluciones] = useState([]);
-  const [usuarios, setUsuarios] = useState([]);
+export interface Resolucion {
+  id: number;
+  numero: string;
+  fecha: string;
+  descripcion: string;
+  estado: string;
+  vigencia: string;
+}
+
+export interface Usuario {
+  id: number;
+  nombre: string;
+  rol: string;
+  email: string;
+}
+
+const GestionResoluciones: React.FC = () => {
+  const [resoluciones, setResoluciones] = useState<Resolucion[]>([]);
+  const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Resoluciones');
   
@@ -34,7 +50,7 @@ const GestionResoluciones = () => {
   
   // Modal states
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [itemToDelete, setItemToDelete] = useState(null);
+  const [itemToDelete, setItemToDelete] = useState<any>(null);
 
   const tabs = [
     'Resoluciones', 'Usuarios', 'Niveles', 'Topes', 
@@ -67,11 +83,11 @@ const GestionResoluciones = () => {
   const filteredData = useMemo(() => {
     const data = activeTab === 'Resoluciones' ? resoluciones : activeTab === 'Usuarios' ? usuarios : [];
     
-    return data.filter(item => {
+    return data.filter((item: any) => {
       // Search matching
       const matchesSearch = activeTab === 'Resoluciones' 
-        ? (item.numero.toLowerCase().includes(searchQuery.toLowerCase()) || 
-           item.descripcion.toLowerCase().includes(searchQuery.toLowerCase()))
+        ? (item.numero?.toLowerCase().includes(searchQuery.toLowerCase()) || 
+           item.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()))
         : (item.nombre?.toLowerCase().includes(searchQuery.toLowerCase()) || 
            item.email?.toLowerCase().includes(searchQuery.toLowerCase()));
       
@@ -88,7 +104,7 @@ const GestionResoluciones = () => {
   const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
   const currentItems = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
-  const handleDeleteClick = (item) => {
+  const handleDeleteClick = (item: any) => {
     setItemToDelete(item);
     setIsDeleteModalOpen(true);
   };
@@ -211,18 +227,18 @@ const GestionResoluciones = () => {
                     </tr>
                   ) : (
                     <tr>
-                      <th colSpan="5">Mantenimiento de {activeTab}</th>
+                      <th colSpan={5}>Mantenimiento de {activeTab}</th>
                     </tr>
                   )}
                 </thead>
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'center', padding: '100px' }}>Cargando datos...</td>
+                      <td colSpan={6} style={{ textAlign: 'center', padding: '100px' }}>Cargando datos...</td>
                     </tr>
                   ) : currentItems.length > 0 ? (
                     activeTab === 'Resoluciones' ? (
-                      currentItems.map(res => (
+                      (currentItems as Resolucion[]).map(res => (
                         <tr key={res.id}>
                           <td style={{ fontWeight: '800', color: '#1C3E57' }}>{res.numero}</td>
                           <td style={{ fontWeight: '600' }}>{res.fecha}</td>
@@ -255,7 +271,7 @@ const GestionResoluciones = () => {
                         </tr>
                       ))
                     ) : activeTab === 'Usuarios' ? (
-                      currentItems.map(user => (
+                      (currentItems as Usuario[]).map(user => (
                         <tr key={user.id}>
                           <td style={{ color: '#1C3E57', fontWeight: '800' }}>{user.id}</td>
                           <td style={{ fontWeight: '700', color: '#1C3E57' }}>{user.nombre}</td>
@@ -278,12 +294,12 @@ const GestionResoluciones = () => {
                       ))
                     ) : (
                       <tr>
-                        <td colSpan="5" style={{ textAlign: 'center', padding: '60px' }}>Sin datos.</td>
+                        <td colSpan={5} style={{ textAlign: 'center', padding: '60px' }}>Sin datos.</td>
                       </tr>
                     )
                   ) : (
                     <tr>
-                      <td colSpan="6" style={{ textAlign: 'center', padding: '60px', color: '#A0B3C5' }}>
+                      <td colSpan={6} style={{ textAlign: 'center', padding: '60px', color: '#A0B3C5' }}>
                         No se encontraron resultados para tu búsqueda.
                       </td>
                     </tr>

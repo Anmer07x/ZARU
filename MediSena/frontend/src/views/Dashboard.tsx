@@ -19,9 +19,27 @@ import {
 import '../App.css';
 import '../styles/Dashboard.css';
 
-const Dashboard = () => {
-  const [stats, setStats] = useState(null);
-  const [citas, setCitas] = useState([]);
+export interface Cita {
+  id: number | string;
+  medico: string;
+  beneficiario: string;
+  hora: string;
+}
+
+export interface StatCardProps {
+  title: string;
+  value: string;
+  subtitle: string;
+  icon: React.ReactNode;
+}
+
+export interface CitaCardProps {
+  cita: Cita;
+}
+
+const Dashboard: React.FC = () => {
+  const [stats, setStats] = useState<any>(null);
+  const [citas, setCitas] = useState<Cita[]>([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(5);
@@ -194,7 +212,7 @@ const Dashboard = () => {
   );
 };
 
-const StatCard = ({ title, value, subtitle, icon }) => (
+const StatCard: React.FC<StatCardProps> = ({ title, value, subtitle, icon }) => (
   <div className="stat-card">
     <div className="stat-card-content">
       <div className="stat-header">
@@ -208,7 +226,7 @@ const StatCard = ({ title, value, subtitle, icon }) => (
   </div>
 );
 
-const CitaCard = ({ cita }) => (
+const CitaCard: React.FC<CitaCardProps> = ({ cita }) => (
   <div className="cita-card">
     <div className="cita-content">
       <div className="cita-top">
