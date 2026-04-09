@@ -73,7 +73,7 @@ const Login = () => {
 
             <form onSubmit={handleLogin} className="login-form">
 
-              <div className="login-input-wrapper">
+              <div className={`login-input-wrapper ${error ? 'has-error' : ''}`}>
                 <label>Número de documento</label>
                 <div className="login-input-group">
                   <User size={20} className="login-icon" />
@@ -88,7 +88,7 @@ const Login = () => {
                 </div>
               </div>
 
-              <div className="login-input-wrapper">
+              <div className={`login-input-wrapper ${error ? 'has-error' : ''}`}>
                 <label>Contraseña</label>
                 <div className="login-input-group">
                   <Lock size={20} className="login-icon" />

@@ -8,8 +8,6 @@ import {
   Edit2,
   Trash2,
   ChevronLeft,
-  ChevronsLeft,
-  ChevronsRight,
   ArrowUpDown,
   Home,
   Copy,
@@ -39,21 +37,18 @@ const GestionResoluciones: React.FC = () => {
   const [usuarios, setUsuarios] = useState<Usuario[]>([]);
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState('Resoluciones');
-  
-  // Filtering & Search states
+
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('');
-  
-  // Pagination states
+
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(10);
-  
-  // Modal states
+
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [itemToDelete, setItemToDelete] = useState<any>(null);
 
   const tabs = [
-    'Resoluciones', 'Usuarios', 'Niveles', 'Topes', 
+    'Resoluciones', 'Usuarios', 'Niveles', 'Topes',
     'Parentescos', 'Abrir vigencia', 'Parámetros', 'Sub-especialidades'
   ];
 
@@ -72,35 +67,27 @@ const GestionResoluciones: React.FC = () => {
         console.error("Error fetching data:", err);
       } finally {
         setLoading(false);
-        setCurrentPage(1); // Reset page on tab change
+        setCurrentPage(1);
       }
     };
-
     fetchData();
   }, [activeTab]);
 
-  // Combined filtering logic
   const filteredData = useMemo(() => {
     const data = activeTab === 'Resoluciones' ? resoluciones : activeTab === 'Usuarios' ? usuarios : [];
-    
     return data.filter((item: any) => {
-      // Search matching
-      const matchesSearch = activeTab === 'Resoluciones' 
-        ? (item.numero?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-           item.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()))
-        : (item.nombre?.toLowerCase().includes(searchQuery.toLowerCase()) || 
-           item.email?.toLowerCase().includes(searchQuery.toLowerCase()));
-      
-      // Status matching
-      const matchesStatus = statusFilter === '' || statusFilter === 'Seleccionar estado' 
-        ? true 
+      const matchesSearch = activeTab === 'Resoluciones'
+        ? (item.numero?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.descripcion?.toLowerCase().includes(searchQuery.toLowerCase()))
+        : (item.nombre?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          item.email?.toLowerCase().includes(searchQuery.toLowerCase()));
+      const matchesStatus = statusFilter === '' || statusFilter === 'Seleccionar estado'
+        ? true
         : item.estado === statusFilter;
-      
       return matchesSearch && matchesStatus;
     });
   }, [activeTab, resoluciones, usuarios, searchQuery, statusFilter]);
 
-  // Pagination calculation
   const totalPages = Math.ceil(filteredData.length / itemsPerPage) || 1;
   const currentItems = filteredData.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
@@ -119,65 +106,66 @@ const GestionResoluciones: React.FC = () => {
     setItemToDelete(null);
   };
 
+  /* Páginas visibles: máx 5 alrededor de la actual */
+  const visiblePages = useMemo(() => {
+    const delta = 2;
+    const start = Math.max(1, currentPage - delta);
+    const end = Math.min(totalPages, currentPage + delta);
+    return Array.from({ length: end - start + 1 }, (_, i) => start + i);
+  }, [currentPage, totalPages]);
+
   return (
     <div className="main-layout">
       <Sidebar />
       <main className="main-content">
         <div className="gestion-container">
-          {/* Breadcrumbs */}
+
+          {/* ── Header ── */}
           <header className="gestion-header">
-            <div>
+            {/* Fila 1: breadcrumb | campana */}
+            <div className="gestion-header-top">
               <nav className="breadcrumb">
-                <div className="breadcrumb-item">
-                  <Home size={14} className="home-icon" />
-                </div>
-                <div className="breadcrumb-item">
-                  <ChevronRight size={14} />
-                  Maestras
-                </div>
-                <div className="breadcrumb-item active">
-                  <ChevronRight size={14} />
-                  {activeTab}
-                </div>
+                <div className="breadcrumb-item"><Home size={14} /></div>
+                <div className="breadcrumb-sep"><ChevronRight size={13} /></div>
+                <div className="breadcrumb-item">Maestras</div>
+                <div className="breadcrumb-sep"><ChevronRight size={13} /></div>
+                <div className="breadcrumb-item active">{activeTab}</div>
               </nav>
-              <h1 className="gestion-title">Gestión de {activeTab}</h1>
+              <Bell size={26} color="#F59E0B" fill="#F59E0B" style={{ cursor: 'pointer', flexShrink: 0 }} />
             </div>
-            
-            <div className="header-right-actions">
+
+            {/* Fila 2: título | búsqueda */}
+            <div className="gestion-header-bottom">
+              <h1 className="gestion-title">Gestión de {activeTab}</h1>
               <div className="search-wrapper">
                 <div className="search-container">
-                  <input 
-                    type="text" 
-                    placeholder="Busca el nombre de usuario o radicado" 
+                  <input
+                    type="text"
+                    placeholder="Busca el nombre de usuario o radicado"
                     className="search-input"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                   />
                 </div>
                 <button className="search-btn">
-                  <Search size={18} />
+                  <Search size={17} />
                 </button>
-              </div>
-              <div style={{ marginLeft: '10px' }}>
-                <Bell size={24} color="#F59E0B" fill="#F59E0B" style={{ cursor: 'pointer' }} />
               </div>
             </div>
           </header>
 
-
-          <div className="gestion-content-card">
-
-            {/* Tabs DENTRO del cuadro blanco — igual que el Figma */}
+          {/* ── Tabs + Card agrupados (sin gap entre ellos) ── */}
+          <div className="tabs-card-group">
             <div className="tabs-scroll-area">
               {tabs.map(tab => (
-                <div 
-                  key={tab} 
+                <div
+                  key={tab}
                   className={`tab-pill ${activeTab === tab ? 'active' : ''}`}
                   onClick={() => setActiveTab(tab)}
                 >
                   {activeTab === tab && (
                     <div className="active-tab-icon">
-                      <FileText size={16} />
+                      <FileText size={14} />
                     </div>
                   )}
                   {tab}
@@ -185,211 +173,192 @@ const GestionResoluciones: React.FC = () => {
               ))}
             </div>
 
-            {/* Toolbar */}
-            <div className="content-toolbar">
-              <div className="stat-filter-container">
-                <select 
-                  className="stat-select" 
-                  value={statusFilter}
-                  onChange={(e) => setStatusFilter(e.target.value)}
-                >
-                  <option>Seleccionar estado</option>
-                  <option value="Vigente">Vigente</option>
-                  <option value="Vencido">Vencido</option>
-                </select>
-              </div>
-              <button className="btn-new-resolution">
-                <Plus size={20} />
-                Nueva {activeTab === 'Resoluciones' ? 'Resolución' : 'Entrada'}
-              </button>
-            </div>
+            {/* ── Card principal ── */}
+            <div className="gestion-content-card">
 
-            {/* Table */}
-            <div className="table-wrapper">
-              <table className="resoluciones-table">
-                <thead>
-                  {activeTab === 'Resoluciones' ? (
-                    <tr>
-                      <th>N° <ArrowUpDown size={14} className="sort-icon" /></th>
-                      <th>FECHA <ArrowUpDown size={14} className="sort-icon" /></th>
-                      <th>DESCRIPCIÓN</th>
-                      <th>ESTADO</th>
-                      <th>VIGENCIA</th>
-                      <th style={{ textAlign: 'right' }}></th>
-                    </tr>
-                  ) : activeTab === 'Usuarios' ? (
-                    <tr>
-                      <th>ID <ArrowUpDown size={14} className="sort-icon" /></th>
-                      <th>NOMBRE <ArrowUpDown size={14} className="sort-icon" /></th>
-                      <th>ROL</th>
-                      <th>EMAIL</th>
-                      <th style={{ textAlign: 'right' }}></th>
-                    </tr>
-                  ) : (
-                    <tr>
-                      <th colSpan={5}>Mantenimiento de {activeTab}</th>
-                    </tr>
-                  )}
-                </thead>
-                <tbody>
-                  {loading ? (
-                    <tr>
-                      <td colSpan={6} style={{ textAlign: 'center', padding: '100px' }}>Cargando datos...</td>
-                    </tr>
-                  ) : currentItems.length > 0 ? (
-                    activeTab === 'Resoluciones' ? (
-                      (currentItems as Resolucion[]).map(res => (
-                        <tr key={res.id}>
-                          <td style={{ fontWeight: '800', color: '#1C3E57' }}>{res.numero}</td>
-                          <td style={{ fontWeight: '600' }}>{res.fecha}</td>
-                          <td>
-                            <div className="desc-with-icon">
-                              {res.descripcion}
-                              <Copy size={16} className="copy-icon" />
-                            </div>
-                          </td>
-                          <td>
-                            <span className={`status-badge ${res.estado.toLowerCase()}`}>
-                              <div className={`status-dot ${res.estado.toLowerCase()}`}></div>
-                              {res.estado}
-                            </span>
-                          </td>
-                          <td style={{ fontWeight: '500' }}>{res.vigencia}</td>
-                          <td>
-                            <div className="row-actions">
-                              <button className="icon-btn edit">
-                                <Edit2 size={18} />
-                              </button>
-                              <button 
-                                className="icon-btn delete"
-                                onClick={() => handleDeleteClick(res)}
-                              >
-                                <Trash2 size={18} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : activeTab === 'Usuarios' ? (
-                      (currentItems as Usuario[]).map(user => (
-                        <tr key={user.id}>
-                          <td style={{ color: '#1C3E57', fontWeight: '800' }}>{user.id}</td>
-                          <td style={{ fontWeight: '700', color: '#1C3E57' }}>{user.nombre}</td>
-                          <td>{user.rol}</td>
-                          <td>{user.email}</td>
-                          <td>
-                            <div className="row-actions">
-                              <button className="icon-btn edit">
-                                <Edit2 size={18} />
-                              </button>
-                              <button 
-                                className="icon-btn delete"
-                                onClick={() => handleDeleteClick(user)}
-                              >
-                                <Trash2 size={18} />
-                              </button>
-                            </div>
-                          </td>
-                        </tr>
-                      ))
-                    ) : (
-                      <tr>
-                        <td colSpan={5} style={{ textAlign: 'center', padding: '60px' }}>Sin datos.</td>
-                      </tr>
-                    )
-                  ) : (
-                    <tr>
-                      <td colSpan={6} style={{ textAlign: 'center', padding: '60px', color: '#A0B3C5' }}>
-                        No se encontraron resultados para tu búsqueda.
-                      </td>
-                    </tr>
-                  )}
-                </tbody>
-              </table>
-            </div>
-
-            {/* Pagination */}
-            <div className="pagination-footer">
-              <div className="items-per-page">
-                <span>Elementos por página</span>
-                <div className="items-select-wrapper">
-                  <select 
-                    className="items-select"
-                    value={itemsPerPage}
-                    onChange={(e) => {
-                      setItemsPerPage(Number(e.target.value));
-                      setCurrentPage(1);
-                    }}
+              {/* Toolbar */}
+              <div className="content-toolbar">
+                <div className="stat-filter-container">
+                  <select
+                    className="stat-select"
+                    value={statusFilter}
+                    onChange={(e) => setStatusFilter(e.target.value)}
                   >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
+                    <option>Seleccionar estado</option>
+                    <option value="Vigente">Vigente</option>
+                    <option value="Vencido">Vencido</option>
                   </select>
                 </div>
+                <button className="btn-new-resolution">
+                  <Plus size={18} />
+                  Nueva {activeTab === 'Resoluciones' ? 'Resolución' : 'Entrada'}
+                </button>
               </div>
 
-              <div className="page-controls">
-                <button 
-                  className="page-link nav"
-                  onClick={() => setCurrentPage(prev => Math.max(1, prev - 1))}
-                  disabled={currentPage === 1}
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                {[...Array(totalPages)].map((_, i) => (
-                  <div 
-                    key={i} 
-                    className={`page-link ${currentPage === i + 1 ? 'active' : ''}`}
-                    onClick={() => setCurrentPage(i + 1)}
-                  >
-                    {i + 1}
+              {/* Tabla */}
+              <div className="table-wrapper">
+                <table className="resoluciones-table">
+                  <thead>
+                    {activeTab === 'Resoluciones' ? (
+                      <tr>
+                        <th>N° <ArrowUpDown size={13} className="sort-icon" /></th>
+                        <th>FECHA <ArrowUpDown size={13} className="sort-icon" /></th>
+                        <th>DESCRIPCIÓN</th>
+                        <th>ESTADO</th>
+                        <th>VIGENCIA</th>
+                        <th></th>
+                      </tr>
+                    ) : activeTab === 'Usuarios' ? (
+                      <tr>
+                        <th>ID <ArrowUpDown size={13} className="sort-icon" /></th>
+                        <th>NOMBRE <ArrowUpDown size={13} className="sort-icon" /></th>
+                        <th>ROL</th>
+                        <th>EMAIL</th>
+                        <th></th>
+                      </tr>
+                    ) : (
+                      <tr><th colSpan={5}>Mantenimiento de {activeTab}</th></tr>
+                    )}
+                  </thead>
+                  <tbody>
+                    {loading ? (
+                      <tr>
+                        <td colSpan={6} className="table-empty">Cargando datos...</td>
+                      </tr>
+                    ) : currentItems.length > 0 ? (
+                      activeTab === 'Resoluciones' ? (
+                        (currentItems as Resolucion[]).map(res => (
+                          <tr key={res.id}>
+                            <td className="col-numero">{res.numero}</td>
+                            <td className="col-fecha">{res.fecha}</td>
+                            <td>
+                              <div className="desc-with-icon">
+                                {res.descripcion}
+                                <Copy size={15} className="copy-icon" />
+                              </div>
+                            </td>
+                            <td>
+                              <span className={`status-badge ${res.estado.toLowerCase()}`}>
+                                <div className={`status-dot ${res.estado.toLowerCase()}`}></div>
+                                {res.estado}
+                              </span>
+                            </td>
+                            <td className="col-vigencia">{res.vigencia}</td>
+                            <td>
+                              <div className="row-actions">
+                                <button className="icon-btn edit"><Edit2 size={16} /></button>
+                                <button className="icon-btn delete" onClick={() => handleDeleteClick(res)}>
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : activeTab === 'Usuarios' ? (
+                        (currentItems as Usuario[]).map(user => (
+                          <tr key={user.id}>
+                            <td className="col-numero">{user.id}</td>
+                            <td className="col-fecha">{user.nombre}</td>
+                            <td>{user.rol}</td>
+                            <td>{user.email}</td>
+                            <td>
+                              <div className="row-actions">
+                                <button className="icon-btn edit"><Edit2 size={16} /></button>
+                                <button className="icon-btn delete" onClick={() => handleDeleteClick(user)}>
+                                  <Trash2 size={16} />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr><td colSpan={5} className="table-empty">Sin datos.</td></tr>
+                      )
+                    ) : (
+                      <tr>
+                        <td colSpan={6} className="table-empty">No se encontraron resultados.</td>
+                      </tr>
+                    )}
+                  </tbody>
+                </table>
+              </div>
+
+              {/* Paginación */}
+              <div className="pagination-footer">
+                <div className="items-per-page">
+                  <span>Elementos por página</span>
+                  <div className="items-select-wrapper">
+                    <select
+                      className="items-select"
+                      value={itemsPerPage}
+                      onChange={(e) => { setItemsPerPage(Number(e.target.value)); setCurrentPage(1); }}
+                    >
+                      <option value={5}>5</option>
+                      <option value={10}>10</option>
+                      <option value={20}>20</option>
+                    </select>
                   </div>
-                ))}
-                <button 
-                  className="page-link nav"
-                  onClick={() => setCurrentPage(prev => Math.min(totalPages, prev + 1))}
-                  disabled={currentPage === totalPages}
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </div>
+                </div>
 
-              <div className="page-info-total">
-                {currentPage} - de {totalPages} páginas
+                <div className="page-controls">
+                  <button
+                    className="page-nav-btn"
+                    onClick={() => setCurrentPage(p => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft size={18} />
+                  </button>
+
+                  {visiblePages.map(n => (
+                    <button
+                      key={n}
+                      className={`page-num-btn ${currentPage === n ? 'active' : ''}`}
+                      onClick={() => setCurrentPage(n)}
+                    >
+                      {n}
+                    </button>
+                  ))}
+
+                  <button
+                    className="page-nav-btn"
+                    onClick={() => setCurrentPage(p => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                  >
+                    <ChevronRight size={18} />
+                  </button>
+                </div>
+
+                <div className="page-info-total">
+                  {currentPage} - de {totalPages} páginas
+                </div>
               </div>
             </div>
           </div>
+
+          {/* Modal eliminar */}
+          {isDeleteModalOpen && (
+            <div className="modal-overlay">
+              <div className="modal-content">
+                <div className="modal-icon-container">
+                  <Trash2 size={26} />
+                </div>
+                <h2 className="modal-title">¿Quieres eliminar esta Resolución?</h2>
+                <p className="modal-description">
+                  Esta acción eliminará la resolución de <strong>forma permanente</strong> y no podrás recuperarla después.
+                </p>
+                <div className="modal-actions">
+                  <button className="btn-modal btn-cancel" onClick={() => setIsDeleteModalOpen(false)}>
+                    Cancelar
+                  </button>
+                  <button className="btn-modal btn-delete" onClick={confirmDelete}>
+                    <Trash2 size={16} />
+                    Eliminar Resolución
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
-
-        {/* Delete Confirmation Modal */}
-        {isDeleteModalOpen && (
-          <div className="modal-overlay">
-            <div className="modal-content">
-              <div className="modal-icon-container">
-                <Trash2 size={28} />
-              </div>
-              <h2 className="modal-title">¿Quieres eliminar esta Resolución?</h2>
-              <p className="modal-description">
-                Esta acción eliminará la resolución de <strong>forma permanente</strong> y no podrás recuperarla después.
-              </p>
-              <div className="modal-actions">
-                <button 
-                  className="btn-modal btn-cancel"
-                  onClick={() => setIsDeleteModalOpen(false)}
-                >
-                  Cancelar
-                </button>
-                <button 
-                  className="btn-modal btn-delete"
-                  onClick={confirmDelete}
-                >
-                  <Trash2 size={18} />
-                  Eliminar Resolución
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </main>
     </div>
   );

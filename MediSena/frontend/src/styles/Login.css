@@ -141,6 +141,25 @@
   color: #000000;
 }
 
+/* Error States */
+.login-input-wrapper.has-error label {
+  color: #ef4444;
+}
+
+.login-input-wrapper.has-error .login-icon,
+.login-input-wrapper.has-error .login-icon-toggle {
+  color: #ef4444;
+}
+
+.login-input-wrapper.has-error .login-input {
+  border-color: #ef4444;
+}
+
+.login-input-wrapper.has-error .login-input:focus {
+  border-color: #ef4444;
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.3);
+}
+
 /* Links & Button */
 .login-links {
   text-align: center;
